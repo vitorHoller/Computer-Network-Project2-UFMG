@@ -1,0 +1,9 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/vitor/Documents/UFMG/Redes/Computer-Network-Project2-UFMG'
+gcc -Wall -c common.c
+gcc -Wall -c f_server.c
+gcc -Wall client.c common.o -o client
+gcc -Wall server.c common.o f_server.o -o server
+gcc -Wall server-mt.c common.o f_server.o -lpthread -o server-mt
+make: Leaving directory '/home/vitor/Documents/UFMG/Redes/Computer-Network-Project2-UFMG'
+ 
