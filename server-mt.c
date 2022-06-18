@@ -47,15 +47,17 @@ void *client_thread(void *data)
     char aux[BUFSZ];
     memset(aux, 0, BUFSZ);
     int index = 0;
-    if (add_equip(buf, equip_vector, MAX, &index) >= 0)
+    if (add_equip(buf, equip_vector, MAX, &index) >= 0) //add equipment on the global vector equip_vector[MAX]
     {
-        add_csock(cdata->csock, csock_vector, MAX, &index);
+        add_csock(cdata->csock, csock_vector, MAX, &index); // also add the cdata->csock at the global vector csock_vector[MAX], with the same index as equip_vector[MAX] (for broadcast)
         send(cdata->csock, buf, strlen(buf), 0);
         memset(buf, 0, BUFSZ);
     }
-    else
+    else // if there are more than 15 equipments on the global vector equip_vector limits exceeds and close connection
     {
         send(cdata->csock, LIMIT, strlen(LIMIT), 0);
+        close(cdata->csock);
+        pthread_exit(EXIT_SUCCESS);
     }
 
     while (1)

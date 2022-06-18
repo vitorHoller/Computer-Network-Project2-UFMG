@@ -10,6 +10,8 @@
 int add_equip(char buf[BUFSZ], int *equip_vector, unsigned int n, int *index)
 {
     int i;
+    char aux[BUFSZ];
+    memset(aux, 0, BUFSZ);
     for (i = 0; i < n; i++)
     {
         if (equip_vector[i] == 0)
@@ -17,7 +19,9 @@ int add_equip(char buf[BUFSZ], int *equip_vector, unsigned int n, int *index)
             equip_vector[i] = i + 1;
             *index = i + 1;
             memset(buf, 0, BUFSZ);
-            sprintf(buf, "Equipment 0%d added", equip_vector[i]);
+            sprintf(aux, "Equipment 0%d added", equip_vector[i]);
+            puts(aux);
+            sprintf(buf, "New ID: 0%d", equip_vector[i]);
             return 0;
         }
     }

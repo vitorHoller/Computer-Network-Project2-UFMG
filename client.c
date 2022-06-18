@@ -9,6 +9,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #define SUCCESS "Success removal"
+#define LIMIT "Equipment limit exceeded"
+
 
 void usage(int argc, char **argv)
 {
@@ -57,8 +59,13 @@ int main(int argc, char **argv)
 	size_t counts = 0; // count bytes sent
 
 	recv(s, buf, BUFSZ, 0);
-	puts(buf);
+	if(strcmp(buf, LIMIT) == 0){
+		close(s);
+		exit(EXIT_SUCCESS);
+	}
 
+	puts(buf);
+	
 	while (1)
 	{
 		memset(buf, 0, BUFSZ);
