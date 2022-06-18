@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#define SUCCESS "Success removal"
 
 void usage(int argc, char **argv)
 {
@@ -72,6 +73,10 @@ int main(int argc, char **argv)
 		memset(buf, 0, BUFSZ);
 		countr = recv(s, buf, BUFSZ - total, 0);
 		puts(buf);
+		if(strcmp(buf, SUCCESS) == 0){
+			close(s);
+			exit(EXIT_SUCCESS);
+		}
 		total += countr; // total of bytes received during the communication
 		printf("received %ld bytes and %u bytes in total\n", countr, total);
 		strcpy(aux, buf);

@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri Jun 17 17:04:52 2022
+# Make data base, printed on Sat Jun 18 10:49:51 2022
 
 # Variables
 
@@ -49,7 +49,7 @@ SNAP_DATA = /var/snap/code/98
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:49954
+JOURNAL_STREAM = 8:56507
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -83,7 +83,7 @@ LC_CTYPE = pt_BR.UTF-8
 # environment
 ROS_PACKAGE_PATH = /home/vitor/Documents/catkin_ws/src:/opt/ros/noetic/share
 # environment
-MANAGERPID = 1807
+MANAGERPID = 1876
 # environment
 ROS_PYTHON_VERSION = 3
 # environment
@@ -103,13 +103,14 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/vitor-Aspire-A515-52G:@/tmp/.ICE-unix/2025,unix/vitor-Aspire-A515-52G:/tmp/.ICE-unix/2025
+SESSION_MANAGER = local/vitor-Aspire-A515-52G:@/tmp/.ICE-unix/2095,unix/vitor-Aspire-A515-52G:/tmp/.ICE-unix/2095
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/vitor/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
 SNAP = /snap/code/98
+ 
 # environment
 ROS_ROOT = /opt/ros/noetic/share/ros
 # environment
@@ -123,7 +124,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 91e8c42ee6c44249a3a59cc9e18f17eb
+INVOCATION_ID = 95f971dc9873496a89881332e49a9d05
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/98/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -137,7 +138,7 @@ ROS_DISTRO = noetic
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4009
+GIO_LAUNCHED_DESKTOP_FILE_PID = 3142
 # automatic
 %F = $(notdir $%)
 # environment
@@ -151,7 +152,7 @@ PWD = /home/vitor/Documents/UFMG/Redes/Computer-Network-Project2-UFMG
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1987
+SSH_AGENT_PID = 2057
 # environment
 PKG_CONFIG_PATH = /home/vitor/Documents/catkin_ws/devel/lib/pkgconfig:/opt/ros/noetic/lib/pkgconfig
 # environment
@@ -207,7 +208,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-649448b7-cc3c-4dfb-ae11-2281aff3ba0f.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-07726dc1-2eae-47c7-b3af-79eccefbd78f.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -265,7 +266,6 @@ SNAP_COOKIE = mp-RTyUtgVhM3zZqskwhzT_Kq8LqMCv5O7GUZQzKnEfRfI1uhQzX
 # environment
 LC_NUMERIC = pt_BR.UTF-8
 # automatic
- 
 <F = $(notdir $<)
 # environment
 LC_MEASUREMENT = pt_BR.UTF-8
@@ -298,7 +298,7 @@ LC_ADDRESS = pt_BR.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4073
+VSCODE_PID = 3340
 # variable set hash-table stats:
 # Load=144/1024=14%, Rehash=0, Collisions=26/172=15%
 
@@ -308,9 +308,9 @@ VSCODE_PID = 4073
 
 # Directories
 
-# . (device 2069, inode 386142): 17 files, no impossibilities.
+# . (device 2069, inode 386142): 16 files, no impossibilities.
 
-# 17 files, no impossibilities in 1 directories.
+# 16 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -347,7 +347,6 @@ all:
 	gcc -Wall -c common.c
 	gcc -Wall -c f_server.c
 	gcc -Wall client.c common.o -o client
-	gcc -Wall server.c common.o f_server.o -o server
 	gcc -Wall server-mt.c common.o f_server.o -lpthread -o server-mt
 
 # Not a target:
@@ -359,7 +358,7 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-17 17:04:16.061765461
+#  Last modified 2022-06-18 10:49:15.587047896
 #  File has been updated.
 #  Successfully updated.
 
@@ -373,8 +372,8 @@ clean:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
-#  recipe to execute (from 'Makefile', line 9):
-	rm common.o f_server.o client server server-mt 
+#  recipe to execute (from 'Makefile', line 8):
+	rm common.o f_server.o client server-mt 
 
 # files hash-table stats:
 # Load=5/1024=0%, Rehash=0, Collisions=0/17=0%
@@ -384,12 +383,12 @@ clean:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 23 / storage = 229 B / avg = 9 B
-# current buf: size = 8162 B / used = 229 B / count = 23 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 22 / storage = 218 B / avg = 9 B
+# current buf: size = 8162 B / used = 218 B / count = 22 / avg = 9 B
 
-# strcache performance: lookups = 31 / hit rate = 25%
+# strcache performance: lookups = 30 / hit rate = 26%
 # hash-table stats:
-# Load=23/8192=0%, Rehash=0, Collisions=1/31=3%
-# Finished Make data base on Fri Jun 17 17:04:52 2022
+# Load=22/8192=0%, Rehash=0, Collisions=1/30=3%
+# Finished Make data base on Sat Jun 18 10:49:51 2022
 
  

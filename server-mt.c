@@ -12,9 +12,13 @@
 
 #define BUFSZ 500
 #define MAX 15
+#define CLOSE "close connection"
+#define LIMIT "Equipment limit exceeded"
+#define SUCCESS "Success removal"
 
-int equip_vector[MAX] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-int csock_vector[MAX] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+
+int equip_vector[MAX] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int csock_vector[MAX] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void usage(int argc, char **argv)
 {
@@ -41,33 +45,45 @@ void *client_thread(void *data)
     char buf[BUFSZ];
     memset(buf, 0, BUFSZ);
     char aux[BUFSZ];
-    memset(aux, 0, BUFSZ); 
+    memset(aux, 0, BUFSZ);
     int index = 0;
-    if(add_equip(buf, equip_vector, MAX, &index) > 0){
+    if (add_equip(buf, equip_vector, MAX, &index) >= 0)
+    {
         add_csock(cdata->csock, csock_vector, MAX, &index);
         send(cdata->csock, buf, strlen(buf), 0);
+        memset(buf, 0, BUFSZ);
     }
     else
     {
-        send(cdata->csock, "limit exceeded", strlen("limit exceeded"), 0);
+        send(cdata->csock, LIMIT, strlen(LIMIT), 0);
     }
-    
-
 
     while (1)
     {
         recv(cdata->csock, buf, BUFSZ - 1, 0);
         strcpy(aux, buf);
         memset(buf, 0, BUFSZ);
-        strncpy(buf, aux, strlen(aux)-1);
-        printf("%ld bytes\n", strlen(buf));
-        send(cdata->csock, buf, strlen(buf), 0);
-        memset(buf, 0, BUFSZ);
-        memset(aux, 0, BUFSZ);
+        strncpy(buf, aux, strlen(aux) - 1);
+        // printf("%ld bytes\n", strlen(buf));
+        if (strcmp(buf, CLOSE) == 0)
+        {
+            memset(buf, 0, BUFSZ);
+            sprintf(buf, SUCCESS);
+            equip_vector[index - 1] = 0;
+            csock_vector[index - 1] = 0;
+            index = 0;
+            send(cdata->csock, buf, strlen(buf), 0);
+            close(cdata->csock);
+            pthread_exit(EXIT_SUCCESS);
+        }
+        else
+        {
+            handle_buf(buf, equip_vector, MAX, index);
+            send(cdata->csock, buf, strlen(buf), 0);
+            memset(buf, 0, BUFSZ);
+            memset(aux, 0, BUFSZ);
+        }
     }
-    close(cdata->csock);
-
-    pthread_exit(EXIT_SUCCESS);
 }
 
 int main(int argc, char **argv)
