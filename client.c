@@ -48,7 +48,6 @@ int main(int argc, char **argv)
 	char addrstr[BUFSZ];
 	addrtostr(addr, addrstr, BUFSZ);
 
-	printf("connected to %s\n", addrstr);
 
 	char buf[BUFSZ];
 	char aux[BUFSZ];
@@ -65,12 +64,11 @@ int main(int argc, char **argv)
 	}
 
 	puts(buf);
-	
+
 	while (1)
 	{
 		memset(buf, 0, BUFSZ);
 		memset(aux, 0, BUFSZ);
-	    printf("mensagem> ");
 		fgets(buf, BUFSZ - 1, stdin);
 		counts = send(s, buf, strlen(buf), 0);
 		if (counts != strlen(buf))
@@ -85,7 +83,6 @@ int main(int argc, char **argv)
 			exit(EXIT_SUCCESS);
 		}
 		total += countr; // total of bytes received during the communication
-		printf("received %ld bytes and %u bytes in total\n", countr, total);
 		strcpy(aux, buf);
         strncpy(buf, aux, strlen(aux)-1); //eliminate '/0'
 		kill(buf, s);

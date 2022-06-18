@@ -40,14 +40,13 @@ void *client_thread(void *data)
 
     char caddrstr[BUFSZ];
     addrtostr(caddr, caddrstr, BUFSZ);
-    printf("[log] connection from %s\n", caddrstr);
 
     char buf[BUFSZ];
     memset(buf, 0, BUFSZ);
     char aux[BUFSZ];
     memset(aux, 0, BUFSZ);
     int index = 0;
-    if (add_equip(buf, equip_vector, MAX, &index) >= 0) //add equipment on the global vector equip_vector[MAX]
+    if (add_equip(buf, equip_vector, MAX, &index) > 0) //add equipment on the global vector equip_vector[MAX]
     {
         add_csock(cdata->csock, csock_vector, MAX, &index); // also add the cdata->csock at the global vector csock_vector[MAX], with the same index as equip_vector[MAX] (for broadcast)
         send(cdata->csock, buf, strlen(buf), 0);
@@ -65,13 +64,16 @@ void *client_thread(void *data)
         recv(cdata->csock, buf, BUFSZ - 1, 0);
         strcpy(aux, buf);
         memset(buf, 0, BUFSZ);
-        strncpy(buf, aux, strlen(aux) - 1);
-        // printf("%ld bytes\n", strlen(buf));
-        if (strcmp(buf, CLOSE) == 0)
+        strncpy(buf, aux, strlen(aux) - 1); //removes '/0' in the end of buf string
+        if (strcmp(buf, CLOSE) == 0) // verify if the client sent close connection command
         {
             memset(buf, 0, BUFSZ);
+            memset(aux, 0, BUFSZ);
+            sprintf(aux, "Equipment 0%d removed", index);
+            puts(aux);
             sprintf(buf, SUCCESS);
-            equip_vector[index - 1] = 0;
+            //zero those vectors of equipment and csock
+            equip_vector[index - 1] = 0; // index is i + 1 in add_equip()/add_cscock(), so equip_vector[i] == equip_vector[index-1]
             csock_vector[index - 1] = 0;
             index = 0;
             send(cdata->csock, buf, strlen(buf), 0);
@@ -80,7 +82,7 @@ void *client_thread(void *data)
         }
         else
         {
-            handle_buf(buf, equip_vector, MAX, index);
+            handle_buf(buf, equip_vector, MAX, index); // handles each command client sent 
             send(cdata->csock, buf, strlen(buf), 0);
             memset(buf, 0, BUFSZ);
             memset(aux, 0, BUFSZ);
@@ -127,7 +129,6 @@ int main(int argc, char **argv)
 
     char addrstr[BUFSZ];
     addrtostr(addr, addrstr, BUFSZ);
-    printf("bound to %s, waiting connections\n", addrstr);
 
     while (1)
     {
