@@ -16,9 +16,9 @@
 #define LIMIT "Equipment limit exceeded"
 #define SUCCESS "Success removal"
 
-
 int equip_vector[MAX] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int csock_vector[MAX] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+int count[1] = {0};
 
 void usage(int argc, char **argv)
 {
@@ -36,20 +36,28 @@ struct client_data
 void *client_thread(void *data)
 {
     struct client_data *cdata = (struct client_data *)data;
-    struct sockaddr *caddr = (struct sockaddr *)(&cdata->storage);
-
-    char caddrstr[BUFSZ];
-    addrtostr(caddr, caddrstr, BUFSZ);
 
     char buf[BUFSZ];
     memset(buf, 0, BUFSZ);
     char aux[BUFSZ];
     memset(aux, 0, BUFSZ);
     int index = 0;
-    if (add_equip(buf, equip_vector, MAX, &index) > 0) //add equipment on the global vector equip_vector[MAX]
+    if (add_equip(buf, equip_vector, MAX, &index, count) > 0) // add equipment on the global vector equip_vector[MAX]
     {
-        add_csock(cdata->csock, csock_vector, MAX, &index); // also add the cdata->csock at the global vector csock_vector[MAX], with the same index as equip_vector[MAX] (for broadcast)
-        send(cdata->csock, buf, strlen(buf), 0);
+        csock_vector[index - 1] = cdata->csock; // also add the cdata->csock at the global vector csock_vector[MAX], with the same index as equip_vector[MAX] (for broadcast)
+        for (int i = 0; i < MAX; i++)
+        {
+            if (i == index - 1)
+            {
+                send(csock_vector[index - 1], buf, strlen(buf), 0);
+            }
+            else if (csock_vector[i] != 0)
+            {
+                memset(aux, 0, BUFSZ);
+                sprintf(aux, "Equipment 0%d added", equip_vector[index - 1]);
+                send(csock_vector[i], aux, strlen(aux), 0);
+            }
+        }
         memset(buf, 0, BUFSZ);
     }
     else // if there are more than 15 equipments on the global vector equip_vector limits exceeds and close connection
@@ -64,29 +72,15 @@ void *client_thread(void *data)
         recv(cdata->csock, buf, BUFSZ - 1, 0);
         strcpy(aux, buf);
         memset(buf, 0, BUFSZ);
-        strncpy(buf, aux, strlen(aux) - 1); //removes '/0' in the end of buf string
-        if (strcmp(buf, CLOSE) == 0) // verify if the client sent close connection command
+        strncpy(buf, aux, strlen(aux) - 1); // removes '/0' in the end of buf string
+
+        // handle_buf(buf, equip_vector, csock_vector, MAX, index); // handles each command client sent
+        if (handle_buf(buf, equip_vector, csock_vector, MAX, index) < 0)
         {
-            memset(buf, 0, BUFSZ);
-            memset(aux, 0, BUFSZ);
-            sprintf(aux, "Equipment 0%d removed", index);
-            puts(aux);
-            sprintf(buf, SUCCESS);
-            //zero those vectors of equipment and csock
-            equip_vector[index - 1] = 0; // index is i + 1 in add_equip()/add_cscock(), so equip_vector[i] == equip_vector[index-1]
-            csock_vector[index - 1] = 0;
-            index = 0;
-            send(cdata->csock, buf, strlen(buf), 0);
-            close(cdata->csock);
             pthread_exit(EXIT_SUCCESS);
         }
-        else
-        {
-            handle_buf(buf, equip_vector, MAX, index); // handles each command client sent 
-            send(cdata->csock, buf, strlen(buf), 0);
-            memset(buf, 0, BUFSZ);
-            memset(aux, 0, BUFSZ);
-        }
+        memset(buf, 0, BUFSZ);
+        memset(aux, 0, BUFSZ);
     }
 }
 
