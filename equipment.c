@@ -39,11 +39,15 @@ void *client_thread(void *data)
 		memset(buf, 0, BUFSZ);
 		struct client_data *cdata = (struct client_data *)data;
 		recv(cdata->csock, buf, BUFSZ, 0);
-		puts(buf);
 		if (strcmp(buf, SUCCESS) == 0)
 		{
+			puts(buf);
 			close(cdata->csock);
 			exit(EXIT_SUCCESS);
+		}
+		if (strlen(buf) != 0)
+		{
+			puts(buf);
 		}
 	}
 	// puts("sai daqui");

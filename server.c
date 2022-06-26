@@ -54,7 +54,8 @@ void *client_thread(void *data)
             else if (csock_vector[i] != 0)
             {
                 memset(aux, 0, BUFSZ);
-                sprintf(aux, "Equipment 0%d added", equip_vector[index - 1]);
+            
+                    sprintf(aux, "Equipment %.2d added", equip_vector[index - 1]);
                 send(csock_vector[i], aux, strlen(aux), 0);
             }
         }
@@ -86,13 +87,13 @@ void *client_thread(void *data)
 
 int main(int argc, char **argv)
 {
-    if (argc < 3)
+    if (argc < 2)
     {
         usage(argc, argv);
     }
 
     struct sockaddr_storage storage;
-    if (0 != server_sockaddr_init(argv[1], argv[2], &storage))
+    if (0 != server_sockaddr_init("v4", argv[1], &storage))
     {
         usage(argc, argv);
     }

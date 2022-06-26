@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Jun 25 14:59:00 2022
+# Make data base, printed on Sun Jun 26 16:43:13 2022
 
 # Variables
 
@@ -23,7 +23,6 @@ DESKTOP_SESSION = ubuntu
 # environment
 XDG_SESSION_CLASS = user
 # environment
- 
 SNAP_COMMON = /var/snap/code/common
 # environment
 XDG_SESSION_TYPE = x11
@@ -50,7 +49,7 @@ SNAP_DATA = /var/snap/code/99
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:56668
+JOURNAL_STREAM = 8:58402
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -84,7 +83,7 @@ LC_CTYPE = pt_BR.UTF-8
 # environment
 ROS_PACKAGE_PATH = /home/vitor/Documents/catkin_ws/src:/opt/ros/noetic/share
 # environment
-MANAGERPID = 1955
+MANAGERPID = 1767
 # environment
 ROS_PYTHON_VERSION = 3
 # environment
@@ -104,7 +103,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/vitor-Aspire-A515-52G:@/tmp/.ICE-unix/2176,unix/vitor-Aspire-A515-52G:/tmp/.ICE-unix/2176
+SESSION_MANAGER = local/vitor-Aspire-A515-52G:@/tmp/.ICE-unix/1986,unix/vitor-Aspire-A515-52G:/tmp/.ICE-unix/1986
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -124,7 +123,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 47a1aac3ba524f84bcf459c8542efc1a
+INVOCATION_ID = c93a4701d93846888ebdce72f20de845
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/99/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -138,7 +137,7 @@ ROS_DISTRO = noetic
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4460
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2992
 # automatic
 %F = $(notdir $%)
 # environment
@@ -152,7 +151,7 @@ PWD = /home/vitor/Documents/UFMG/Redes/Computer-Network-Project2-UFMG
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2138
+SSH_AGENT_PID = 1948
 # environment
 PKG_CONFIG_PATH = /home/vitor/Documents/catkin_ws/devel/lib/pkgconfig:/opt/ros/noetic/lib/pkgconfig
 # environment
@@ -208,7 +207,7 @@ SHLVL = 0
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a50225f6-c586-4e7b-9da9-08006ae62925.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ab66cfbb-048a-4855-9ee1-bfb03d9ca605.sock
 # default
 MAKE_VERSION := 4.2.1
 # environment
@@ -279,6 +278,7 @@ LC_ALL = C
 GJS_DEBUG_TOPICS = JS ERROR;JS LOG
 # automatic
 ^F = $(notdir $^)
+ 
 # default
 SUFFIXES := 
 # environment
@@ -298,7 +298,7 @@ LC_ADDRESS = pt_BR.UTF-8
 # environment
 LANG = C
 # environment
-VSCODE_PID = 4560
+VSCODE_PID = 3047
 # variable set hash-table stats:
 # Load=144/1024=14%, Rehash=0, Collisions=26/172=15%
 
@@ -308,9 +308,9 @@ VSCODE_PID = 4560
 
 # Directories
 
-# . (device 2069, inode 386142): 17 files, no impossibilities.
+# . (device 2069, inode 386142): 21 files, no impossibilities.
 
-# 17 files, no impossibilities in 1 directories.
+# 21 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -347,8 +347,8 @@ all:
 	gcc -Wall -c common.c
 	gcc -Wall -c f_server.c
 	gcc -Wall client.c common.o -o client
-	gcc -Wall client-mt.c common.o -lpthread -o client-mt
-	gcc -Wall server-mt.c common.o f_server.o -lpthread -o server-mt
+	gcc -Wall equipment.c common.o -lpthread -o equipment
+	gcc -Wall server.c common.o f_server.o -lpthread -o server
 
 # Not a target:
 .SUFFIXES:
@@ -359,7 +359,7 @@ all:
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-25 14:58:58.619580253
+#  Last modified 2022-06-26 16:40:47.366941702
 #  File has been updated.
 #  Successfully updated.
 
@@ -374,7 +374,7 @@ clean:
 #  Modification time never checked.
 #  File has not been updated.
 #  recipe to execute (from 'Makefile', line 9):
-	rm common.o f_server.o client client-mt server-mt 
+	rm common.o f_server.o client equipment server 
 
 # files hash-table stats:
 # Load=5/1024=0%, Rehash=0, Collisions=0/17=0%
@@ -384,12 +384,12 @@ clean:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 23 / storage = 230 B / avg = 10 B
-# current buf: size = 8162 B / used = 230 B / count = 23 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 27 / storage = 265 B / avg = 9 B
+# current buf: size = 8162 B / used = 265 B / count = 27 / avg = 9 B
 
-# strcache performance: lookups = 31 / hit rate = 25%
+# strcache performance: lookups = 35 / hit rate = 22%
 # hash-table stats:
-# Load=23/8192=0%, Rehash=0, Collisions=1/31=3%
-# Finished Make data base on Sat Jun 25 14:59:00 2022
+# Load=27/8192=0%, Rehash=0, Collisions=1/35=3%
+# Finished Make data base on Sun Jun 26 16:43:13 2022
 
  
