@@ -11,14 +11,14 @@
 #include <sys/types.h>
 
 #define BUFSZ 500
-#define MAX 15
+#define MAX 15 // defines the max number of equipments
 #define CLOSE "close connection"
 #define LIMIT "Equipment limit exceeded"
 #define SUCCESS "Success removal"
 
-int equip_vector[MAX] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-int csock_vector[MAX] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-int count[1] = {0};
+int equip_vector[MAX] = {0}; // global equipment array 
+int csock_vector[MAX] = {0}; // global socket array
+int count[1] = {0};          // increments a global id
 
 void usage(int argc, char **argv)
 {
@@ -49,15 +49,14 @@ void *client_thread(void *data)
         {
             if (i == index - 1)
             {
-                send(csock_vector[index - 1], buf, strlen(buf), 0);
-            }
-            else if (csock_vector[i] != 0)
+                send(csock_vector[index - 1], buf, strlen(buf), 0); // buf had his value changed inside add_equip()
+            }                                                       // sends buf just to the equipment that has been just 
+            else if (csock_vector[i] != 0)                          // added
             {
                 memset(aux, 0, BUFSZ);
-            
-                    sprintf(aux, "Equipment %.2d added", equip_vector[index - 1]);
-                send(csock_vector[i], aux, strlen(aux), 0);
-            }
+                sprintf(aux, "Equipment %.2d added", equip_vector[index - 1]); 
+                send(csock_vector[i], aux, strlen(aux), 0); // sends aux to all equipments connected with server, but the 
+            }                                               // one which were added
         }
         memset(buf, 0, BUFSZ);
     }
@@ -68,15 +67,14 @@ void *client_thread(void *data)
         pthread_exit(EXIT_SUCCESS);
     }
 
-    while (1)
+    while (1) 
     {
         recv(cdata->csock, buf, BUFSZ - 1, 0);
         strcpy(aux, buf);
         memset(buf, 0, BUFSZ);
         strncpy(buf, aux, strlen(aux) - 1); // removes '/0' in the end of buf string
 
-        // handle_buf(buf, equip_vector, csock_vector, MAX, index); // handles each command client sent
-        if (handle_buf(buf, equip_vector, csock_vector, MAX, index) < 0)
+        if (handle_buf(buf, equip_vector, csock_vector, MAX, index) < 0)    // handles each command client sent
         {
             pthread_exit(EXIT_SUCCESS);
         }
